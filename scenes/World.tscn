@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://byycx3eemm1ft"]
+[gd_scene load_steps=15 format=3 uid="uid://byycx3eemm1ft"]
 
 [ext_resource type="Script" uid="uid://c1l3ac0xr37aw" path="res://scripts/World.gd" id="1_c6gwx"]
 [ext_resource type="Script" uid="uid://m2vlqta6ehny" path="res://scripts/DragLayer.gd" id="2_hlk0d"]
@@ -8,12 +8,17 @@
 [ext_resource type="Script" uid="uid://x3xi8fnbanl4" path="res://scripts/ShopBar.gd" id="7_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://ncdu2faijkrd" path="res://scenes/SniperTurret.tscn" id="8_pdh0q"]
 [ext_resource type="Script" uid="uid://dpvon03y1t6qx" path="res://scripts/WaveManager.gd" id="8_ygioq"]
+[ext_resource type="Script" uid="uid://cxgndcw6v0sc2" path="res://scripts/FallingInventory.gd" id="9_h1bdy"]
 [ext_resource type="Script" uid="uid://el2sha2pbr2x" path="res://scripts/GameUI.gd" id="9_pdh0q"]
+[ext_resource type="PackedScene" uid="uid://cyb22sdfte44o" path="res://scenes/TestWizardItem.tscn" id="10_7c4bj"]
+[ext_resource type="Texture2D" uid="uid://d3186gcp2ep2t" path="res://textures/environment_sketches_v002.png" id="10_pdh0q"]
+[ext_resource type="PackedScene" uid="uid://bsgsotdsnsqga" path="res://scenes/TestToolItem.tscn" id="11_nrtoj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ygioq"]
 font_size = 26
 
 [node name="World" type="Node2D"]
+top_level = true
 script = ExtResource("1_c6gwx")
 queen_scene = ExtResource("5_pof0q")
 
@@ -33,7 +38,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1.0
+offset_left = 1.0
+offset_right = 2.0
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -64,6 +70,7 @@ mouse_filter = 2
 color = Color(0.027451, 0.368627, 0.745098, 0.364706)
 
 [node name="ShopBar" type="Node2D" parent="GameLayer/UI"]
+visible = false
 position = Vector2(576, 573)
 script = ExtResource("7_0uv0p")
 item_scenes = Array[PackedScene]([ExtResource("4_p1v5b"), ExtResource("8_pdh0q")])
@@ -83,6 +90,25 @@ offset_top = -16.0
 offset_right = 500.0
 offset_bottom = 18.0
 metadata/_edit_use_anchors_ = true
+
+[node name="InventoryRoot" type="Node2D" parent="GameLayer/UI"]
+
+[node name="WizardPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
+position = Vector2(576, 580)
+script = ExtResource("9_h1bdy")
+item_pool = Array[PackedScene]([ExtResource("10_7c4bj")])
+initial_items = 2
+gravity = 100.0
+
+[node name="ToolsPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
+position = Vector2(150, 580)
+script = ExtResource("9_h1bdy")
+item_pool = Array[PackedScene]([ExtResource("11_nrtoj")])
+initial_items = 1
+gravity = 100.0
+
+[node name="TokenPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
+position = Vector2(1000, 580)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -140,3 +166,9 @@ offset_right = 760.0
 offset_bottom = 43.0
 text = ">"
 metadata/_edit_use_anchors_ = true
+
+[node name="EnvironmentSketchesV002" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(589, 332.75)
+scale = Vector2(0.173447, 0.173447)
+texture = ExtResource("10_pdh0q")

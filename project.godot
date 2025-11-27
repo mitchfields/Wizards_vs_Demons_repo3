@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Bee_Game_Final"
+config/name="Wizards_vs_Demons"
 run/main_scene="uid://csf8r2ye82pcn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
