@@ -14,7 +14,7 @@ bounce = 0.1
 absorbent = true
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pntfb"]
-size = Vector2(112, 8.5)
+size = Vector2(151, 8.5)
 
 [node name="TokenCoin" type="RigidBody2D"]
 mass = 15.0
@@ -23,13 +23,13 @@ continuous_cd = 2
 linear_damp = 3.0
 angular_damp = 3.0
 script = ExtResource("1_pntfb")
+rotation_step = 2
 tilt_level = 2
 spin_velocity_scale = 0.1
 hover_radius = 12.165
 tilt_rest = null
 tilt_hover = 5
 tilt_motion_neutral = 1
-initial_drop_speed = 700.0
 spawn_sounds = Array[AudioStream]([ExtResource("2_sdqx8"), ExtResource("3_7k30e"), ExtResource("4_bkv45"), ExtResource("5_xi37m"), ExtResource("6_7k30e")])
 hit_sound = ExtResource("3_7k30e")
 hover_sounds = Array[AudioStream]([ExtResource("2_sdqx8"), ExtResource("3_7k30e"), ExtResource("4_bkv45"), ExtResource("5_xi37m"), ExtResource("6_7k30e")])
@@ -40,7 +40,7 @@ hframes = 9
 vframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 14.25)
+position = Vector2(2.5, 14.25)
 shape = SubResource("RectangleShape2D_pntfb")
 
 [node name="SFX" type="AudioStreamPlayer2D" parent="."]

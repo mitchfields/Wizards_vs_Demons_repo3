@@ -173,7 +173,7 @@ func _apply_frame() -> void:
 	_sprite.frame = frame_index
 
 
-func _play_random_sfx(sounds: Array[AudioStream], base_volume_db: float = 0.0, pitch_jitter: float = 0.1) -> void:
+func _play_random_sfx(sounds: Array[AudioStream], base_volume_db: float = 0.0, pitch_jitter: float = 0.4) -> void:
 	if _sfx == null:
 		return
 	if sounds.is_empty():
