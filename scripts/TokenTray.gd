@@ -1,9 +1,10 @@
 extends Node2D
 
 @export var coin_scene: PackedScene
-@export var initial_items: int = 5
+@export var initial_items: int = 15
 @export var spawn_height: float = -200.0
-@export var spawn_interval: float = 0.1  # seconds between spawns (set to 0 for instant)
+@export var spawn_interval: float = 0.08  # seconds between spawns (set to 0 for instant)
+@export var spawn_rotation_range_degrees: float = 6.0  # NEW: small random 2D rotation at spawn
 
 var _spawned_count: int = 0
 var _spawn_timer: float = 0.0
@@ -46,5 +47,7 @@ func _spawn_coin() -> void:
 	add_child(inst)
 
 	if inst is Node2D:
-		var x_offset := randf_range(-6, 6)
+		var x_offset := randf_range(-1, 1)
 		inst.position = Vector2(x_offset, spawn_height)
+		# Slight random 2D rotation so the stack isn't perfectly aligned
+		inst.rotation_degrees = randf_range(-spawn_rotation_range_degrees, spawn_rotation_range_degrees)

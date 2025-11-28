@@ -1,7 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://dp4ql1mql8kk"]
+[gd_scene load_steps=10 format=3 uid="uid://dp4ql1mql8kk"]
 
 [ext_resource type="Script" uid="uid://ufhu02y1qlrr" path="res://scripts/TokenCoin.gd" id="1_pntfb"]
 [ext_resource type="Texture2D" uid="uid://ctbtqgtlk0kgn" path="res://textures/hexagon_coin_test_png.png" id="2_2vtgv"]
+[ext_resource type="AudioStream" uid="uid://cq3dgskdct8m2" path="res://audio/coin_drop_v001.mp3" id="2_sdqx8"]
+[ext_resource type="AudioStream" uid="uid://63b4hytoqy1p" path="res://audio/coin_drop_v002.mp3" id="3_7k30e"]
+[ext_resource type="AudioStream" uid="uid://bx582ebdepjqb" path="res://audio/coin_drop_v003.mp3" id="4_bkv45"]
+[ext_resource type="AudioStream" uid="uid://c047v0eu28ejd" path="res://audio/coin_drop_v004.mp3" id="5_xi37m"]
+[ext_resource type="AudioStream" uid="uid://m5ceskiuvw5n" path="res://audio/coin_drop_v005.mp3" id="6_7k30e"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mu8fn"]
 rough = true
@@ -9,21 +14,25 @@ bounce = 0.1
 absorbent = true
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pntfb"]
-size = Vector2(114.313, 7)
+size = Vector2(112, 8.5)
 
 [node name="TokenCoin" type="RigidBody2D"]
-mass = 33.932
+mass = 15.0
 physics_material_override = SubResource("PhysicsMaterial_mu8fn")
+continuous_cd = 2
 linear_damp = 3.0
 angular_damp = 3.0
 script = ExtResource("1_pntfb")
 tilt_level = 2
-spin_velocity_scale = 0.5
+spin_velocity_scale = 0.1
 hover_radius = 12.165
 tilt_rest = null
 tilt_hover = 5
 tilt_motion_neutral = 1
-initial_drop_speed = null
+initial_drop_speed = 700.0
+spawn_sounds = Array[AudioStream]([ExtResource("2_sdqx8"), ExtResource("3_7k30e"), ExtResource("4_bkv45"), ExtResource("5_xi37m"), ExtResource("6_7k30e")])
+hit_sound = ExtResource("3_7k30e")
+hover_sounds = Array[AudioStream]([ExtResource("2_sdqx8"), ExtResource("3_7k30e"), ExtResource("4_bkv45"), ExtResource("5_xi37m"), ExtResource("6_7k30e")])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_2vtgv")
@@ -31,5 +40,7 @@ hframes = 9
 vframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 14.5)
+position = Vector2(1, 14.25)
 shape = SubResource("RectangleShape2D_pntfb")
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="."]

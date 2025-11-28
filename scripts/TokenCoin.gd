@@ -16,9 +16,15 @@ const TILT_STEPS: int = 6
 @export var tilt_motion_neutral: int = 3        # center tilt used during falling
 
 # Strong initial vertical speed so it feels fast without crazy gravity
-@export var initial_drop_speed: float = 400.0   # tweak for 3–5x feel
+@export var initial_drop_speed: float = 800.0   # tweak for 3–5x feel
+
+# SFX
+@export var spawn_sounds: Array[AudioStream] = []   # now used for HIT
+@export var hit_sound: AudioStream                  # now used for HOVER
+@export var hover_sounds: Array[AudioStream] = []   # now used for SPAWN
 
 @onready var _sprite: Sprite2D = $Sprite2D
+@onready var _sfx: AudioStreamPlayer2D = $SFX
 
 var rotation_phase: float = 0.0
 var spin_direction: float = 1.0                 # +1 or -1
@@ -52,6 +58,9 @@ func _ready() -> void:
 	# Strong initial downward velocity so it feels fast without insane gravity
 	linear_velocity = Vector2(0.0, initial_drop_speed)
 
+	# SPAWN: use hover_sounds (no inspector changes needed)
+	_play_random_sfx(hover_sounds, -4.0, 0.05)
+
 	_apply_frame()
 
 
@@ -69,7 +78,7 @@ func _update_spin_from_velocity(delta: float) -> void:
 	var speed: float = linear_velocity.length()
 
 	# If basically not moving, don’t spin
-	if speed < 25.0:
+	if speed < 10.0:
 		return
 
 	# More speed = faster rotation around the fake upvector, with random direction
@@ -80,7 +89,7 @@ func _update_spin_from_velocity(delta: float) -> void:
 func _update_physics_tilt(delta: float) -> void:
 	var speed: float = linear_velocity.length()
 	var rest_threshold: float = 15.0
-	var high_speed: float = 300.0
+	var high_speed: float = 200.0
 
 	# --- Bounce inversion + big tilt kick ---
 	if signf(linear_velocity.y) != signf(last_vel_y) and abs(linear_velocity.y) > 30.0:
@@ -88,6 +97,9 @@ func _update_physics_tilt(delta: float) -> void:
 		# Big immediate shove toward the new extreme
 		var bounce_target: float = float(TILT_STEPS - 1) if tilt_direction > 0 else 0.0
 		tilt_float = lerp(tilt_float, bounce_target, 0.6)  # large jump, not scaled by delta
+
+		# HIT: use spawn_sounds
+		_play_random_sfx(spawn_sounds, 0.0, 0.08)
 
 	if speed < rest_threshold:
 		# Ease back toward resting tilt when nearly still (FASTER now)
@@ -126,9 +138,13 @@ func _update_hover_tilt_and_spin(delta: float) -> void:
 	var hovered: bool = dist <= hover_radius
 
 	if hovered:
+		# HOVER ENTER: use hit_sound
+		if not _was_hovered:
+			_play_single_sfx(hit_sound, -6.0, 0.12)
+
 		# Pull quickly toward hover tilt band
 		var target: float = float(tilt_hover)
-		tilt_float = lerp(tilt_float, target, 30.0 * delta)
+		tilt_float = lerp(tilt_float, target, 15.0 * delta)
 		tilt_float = clamp(tilt_float, 0.0, float(TILT_STEPS - 1))
 		tilt_level = int(round(tilt_float))
 	else:
@@ -155,6 +171,37 @@ func _apply_frame() -> void:
 
 	var frame_index: int = tilt * ROT_STEPS + rot
 	_sprite.frame = frame_index
+
+
+func _play_random_sfx(sounds: Array[AudioStream], base_volume_db: float = 0.0, pitch_jitter: float = 0.1) -> void:
+	if _sfx == null:
+		return
+	if sounds.is_empty():
+		return
+
+	var idx: int = int(randi() % sounds.size())
+	var stream: AudioStream = sounds[idx]
+	if stream == null:
+		return
+
+	_sfx.stop()
+	_sfx.stream = stream
+	_sfx.pitch_scale = 1.0 + randf_range(-pitch_jitter, pitch_jitter)
+	_sfx.volume_db = base_volume_db
+	_sfx.play()
+
+
+func _play_single_sfx(stream: AudioStream, base_volume_db: float = 0.0, pitch_jitter: float = 0.1) -> void:
+	if _sfx == null:
+		return
+	if stream == null:
+		return
+
+	_sfx.stop()
+	_sfx.stream = stream
+	_sfx.pitch_scale = 1.0 + randf_range(-pitch_jitter, pitch_jitter)
+	_sfx.volume_db = base_volume_db
+	_sfx.play()
 
 
 func signf(x: float) -> int:

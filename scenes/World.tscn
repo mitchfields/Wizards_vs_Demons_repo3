@@ -118,7 +118,9 @@ position = Vector2(1000, 580)
 script = ExtResource("12_c0d7e")
 coin_scene = ExtResource("13_o1tcx")
 initial_items = 10
-spawn_interval = 0.2
+spawn_height = -300.0
+spawn_interval = 0.15
+spawn_rotation_range_degrees = 15.0
 
 [node name="TokenFloor" type="StaticBody2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform"]
 
@@ -191,4 +193,4 @@ texture = ExtResource("10_pdh0q")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_c0d7e")
-autoplay = true
+volume_db = -5.309
