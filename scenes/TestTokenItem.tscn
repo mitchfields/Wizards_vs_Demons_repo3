@@ -1,3 +1,10 @@
-[gd_scene format=3 uid="uid://cralta623isix"]
+[gd_scene load_steps=2 format=3 uid="uid://cralta623isix"]
+
+[ext_resource type="Texture2D" uid="uid://c5qoctaqmhrbh" path="res://icon.svg" id="1_f3jxs"]
 
 [node name="TestTokenItem" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -1)
+scale = Vector2(1.60156, 0.257813)
+texture = ExtResource("1_f3jxs")

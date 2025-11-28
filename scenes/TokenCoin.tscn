@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dp4ql1mql8kk"]
+
+[ext_resource type="Script" uid="uid://ufhu02y1qlrr" path="res://scripts/TokenCoin.gd" id="1_pntfb"]
+[ext_resource type="Texture2D" uid="uid://ctbtqgtlk0kgn" path="res://textures/hexagon_coin_test_png.png" id="2_2vtgv"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mu8fn"]
+rough = true
+bounce = 0.1
+absorbent = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pntfb"]
+size = Vector2(114.313, 7)
+
+[node name="TokenCoin" type="RigidBody2D"]
+mass = 33.932
+physics_material_override = SubResource("PhysicsMaterial_mu8fn")
+linear_damp = 3.0
+angular_damp = 3.0
+script = ExtResource("1_pntfb")
+tilt_level = 2
+spin_velocity_scale = 0.5
+hover_radius = 12.165
+tilt_rest = null
+tilt_hover = 5
+tilt_motion_neutral = 1
+initial_drop_speed = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_2vtgv")
+hframes = 9
+vframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14.5)
+shape = SubResource("RectangleShape2D_pntfb")

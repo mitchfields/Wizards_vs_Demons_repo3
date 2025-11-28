@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://byycx3eemm1ft"]
+[gd_scene load_steps=19 format=3 uid="uid://byycx3eemm1ft"]
 
 [ext_resource type="Script" uid="uid://c1l3ac0xr37aw" path="res://scripts/World.gd" id="1_c6gwx"]
 [ext_resource type="Script" uid="uid://m2vlqta6ehny" path="res://scripts/DragLayer.gd" id="2_hlk0d"]
@@ -13,6 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://cyb22sdfte44o" path="res://scenes/TestWizardItem.tscn" id="10_7c4bj"]
 [ext_resource type="Texture2D" uid="uid://d3186gcp2ep2t" path="res://textures/environment_sketches_v002.png" id="10_pdh0q"]
 [ext_resource type="PackedScene" uid="uid://bsgsotdsnsqga" path="res://scenes/TestToolItem.tscn" id="11_nrtoj"]
+[ext_resource type="Script" uid="uid://dljqdpm0ijwsb" path="res://scripts/TokenTray.gd" id="12_c0d7e"]
+[ext_resource type="PackedScene" uid="uid://dp4ql1mql8kk" path="res://scenes/TokenCoin.tscn" id="13_o1tcx"]
+[ext_resource type="AudioStream" uid="uid://ciwpin4bjaqbg" path="res://audio/test_track_youtube_recording_v001.wav" id="15_c0d7e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o1tcx"]
+size = Vector2(389.75, 59.25)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ygioq"]
 font_size = 26
@@ -109,6 +115,16 @@ gravity = 100.0
 
 [node name="TokenPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
 position = Vector2(1000, 580)
+script = ExtResource("12_c0d7e")
+coin_scene = ExtResource("13_o1tcx")
+initial_items = 10
+spawn_interval = 0.2
+
+[node name="TokenFloor" type="StaticBody2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform/TokenFloor"]
+position = Vector2(8, 29)
+shape = SubResource("RectangleShape2D_o1tcx")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -172,3 +188,7 @@ visible = false
 position = Vector2(589, 332.75)
 scale = Vector2(0.173447, 0.173447)
 texture = ExtResource("10_pdh0q")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_c0d7e")
+autoplay = true
