@@ -122,9 +122,6 @@ position = Vector2(914, 457)
 script = ExtResource("12_c0d7e")
 coin_scene = ExtResource("13_o1tcx")
 initial_items = 10
-spawn_height = -300.0
-spawn_interval = 0.1
-spawn_rotation_range_degrees = 15.0
 held_token_scene = ExtResource("3_nthub")
 
 [node name="TokenFloor" type="StaticBody2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform"]
@@ -202,6 +199,7 @@ text = ">"
 metadata/_edit_use_anchors_ = true
 
 [node name="EnvironmentUiSketchV001" type="Sprite2D" parent="."]
+visible = false
 show_behind_parent = true
 z_index = 1
 z_as_relative = false
