@@ -5,7 +5,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_qae0b"]
 font_size = 61
 
-[node name="GameOver" type="Node2D"]
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_6bcno")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]

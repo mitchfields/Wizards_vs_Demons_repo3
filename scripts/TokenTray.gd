@@ -53,7 +53,7 @@ func _spawn_coin() -> void:
 	if inst is Node2D:
 		var node2d: Node2D = inst as Node2D
 		# tight horizontal stack like you wanted
-		var x_offset: float = randf_range(-2.0, 2.0)
+		var x_offset: float = randf_range(-2, 2)
 		node2d.position = Vector2(x_offset, spawn_height)
 		node2d.rotation_degrees = randf_range(-spawn_rotation_range_degrees, spawn_rotation_range_degrees)
 

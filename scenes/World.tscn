@@ -1,26 +1,31 @@
-[gd_scene load_steps=21 format=3 uid="uid://byycx3eemm1ft"]
+[gd_scene load_steps=22 format=3 uid="uid://byycx3eemm1ft"]
 
 [ext_resource type="Script" uid="uid://c1l3ac0xr37aw" path="res://scripts/World.gd" id="1_c6gwx"]
-[ext_resource type="Script" uid="uid://m2vlqta6ehny" path="res://scripts/DragLayer.gd" id="2_hlk0d"]
 [ext_resource type="PackedScene" uid="uid://qylv8huf4d2i" path="res://scenes/CommonEnemy.tscn" id="3_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://bcd1hys4f0828" path="res://scenes/HeldToken.tscn" id="3_nthub"]
-[ext_resource type="PackedScene" uid="uid://cfecedf7skswl" path="res://scenes/HexagonTile.tscn" id="4_p1v5b"]
+[ext_resource type="PackedScene" uid="uid://bwblo0h7g70tk" path="res://scenes/EnemyPortal.tscn" id="3_rpuxp"]
 [ext_resource type="PackedScene" uid="uid://c0li1mfxqf3xg" path="res://scenes/Queen.tscn" id="5_pof0q"]
-[ext_resource type="Script" uid="uid://x3xi8fnbanl4" path="res://scripts/ShopBar.gd" id="7_0uv0p"]
-[ext_resource type="PackedScene" uid="uid://ncdu2faijkrd" path="res://scenes/SniperTurret.tscn" id="8_pdh0q"]
 [ext_resource type="Script" uid="uid://dpvon03y1t6qx" path="res://scripts/WaveManager.gd" id="8_ygioq"]
 [ext_resource type="Script" uid="uid://cxgndcw6v0sc2" path="res://scripts/FallingInventory.gd" id="9_h1bdy"]
+[ext_resource type="Script" uid="uid://4r0ebndaleek" path="res://scripts/WizardTray.gd" id="9_nthub"]
 [ext_resource type="Script" uid="uid://el2sha2pbr2x" path="res://scripts/GameUI.gd" id="9_pdh0q"]
-[ext_resource type="PackedScene" uid="uid://cyb22sdfte44o" path="res://scenes/TestWizardItem.tscn" id="10_7c4bj"]
+[ext_resource type="PackedScene" uid="uid://ccyawadxcs6ry" path="res://scenes/WizardItem.tscn" id="10_dwmkc"]
 [ext_resource type="Texture2D" uid="uid://d3186gcp2ep2t" path="res://textures/environment_sketches_v002.png" id="10_pdh0q"]
+[ext_resource type="PackedScene" uid="uid://bdwyd2xuregg5" path="res://scenes/HeldWizard.tscn" id="11_30fn3"]
 [ext_resource type="PackedScene" uid="uid://bsgsotdsnsqga" path="res://scenes/TestToolItem.tscn" id="11_nrtoj"]
 [ext_resource type="Script" uid="uid://dljqdpm0ijwsb" path="res://scripts/TokenTray.gd" id="12_c0d7e"]
 [ext_resource type="PackedScene" uid="uid://dp4ql1mql8kk" path="res://scenes/TokenCoin.tscn" id="13_o1tcx"]
 [ext_resource type="AudioStream" uid="uid://ciwpin4bjaqbg" path="res://audio/test_track_youtube_recording_v001.wav" id="15_c0d7e"]
 [ext_resource type="Texture2D" uid="uid://bjtaomj4qsfm0" path="res://textures/environment_UI_sketch_v001.png" id="17_rpuxp"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_30fn3"]
+size = Vector2(595, 97.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwmkc"]
+size = Vector2(1177.25, 58.5)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o1tcx"]
-size = Vector2(360.875, 59.25)
+size = Vector2(410.438, 59.25)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ygioq"]
 font_size = 26
@@ -29,6 +34,7 @@ font_size = 26
 top_level = true
 script = ExtResource("1_c6gwx")
 queen_scene = ExtResource("5_pof0q")
+portal_scene = ExtResource("3_rpuxp")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 324)
@@ -41,72 +47,7 @@ enemy_scenes = Array[PackedScene]([ExtResource("3_0uv0p")])
 
 [node name="UI" type="CanvasLayer" parent="GameLayer"]
 
-[node name="DragLayer" type="Control" parent="GameLayer/UI"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.0
-offset_right = 2.0
-offset_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("2_hlk0d")
-
-[node name="ShopLayer" type="CenterContainer" parent="GameLayer/UI/DragLayer"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="GameLayer/UI/DragLayer"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.884
-anchor_right = 0.853
-anchor_bottom = 0.969
-offset_left = -20.01
-offset_top = 0.283997
-offset_right = -0.509094
-offset_bottom = 0.118958
-mouse_filter = 2
-color = Color(0.027451, 0.368627, 0.745098, 0.364706)
-
-[node name="ShopBar" type="Node2D" parent="GameLayer/UI"]
-visible = false
-position = Vector2(576, 573)
-script = ExtResource("7_0uv0p")
-item_scenes = Array[PackedScene]([ExtResource("4_p1v5b"), ExtResource("8_pdh0q")])
-bar_width = 601.065
-drop_back_ratio = 0.16
-
-[node name="RerollButton" type="Button" parent="GameLayer/UI/ShopBar"]
-offset_left = -465.0
-offset_top = -16.0
-offset_right = -340.0
-offset_bottom = 21.0
-metadata/_edit_use_anchors_ = true
-
-[node name="FreezeButton" type="Button" parent="GameLayer/UI/ShopBar"]
-offset_left = 396.0
-offset_top = -16.0
-offset_right = 500.0
-offset_bottom = 18.0
-metadata/_edit_use_anchors_ = true
-
 [node name="InventoryRoot" type="Node2D" parent="GameLayer/UI"]
-
-[node name="WizardPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
-position = Vector2(576, 580)
-script = ExtResource("9_h1bdy")
-item_pool = Array[PackedScene]([ExtResource("10_7c4bj")])
-initial_items = 2
-gravity = 100.0
 
 [node name="ToolsPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
 position = Vector2(150, 580)
@@ -115,30 +56,51 @@ item_pool = Array[PackedScene]([ExtResource("11_nrtoj")])
 initial_items = 1
 gravity = 100.0
 
+[node name="WizardPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
+position = Vector2(576, 580)
+script = ExtResource("9_nthub")
+wizard_scene = ExtResource("10_dwmkc")
+held_wizard_scene = ExtResource("11_30fn3")
+initial_items = 8
+
+[node name="TrayArea" type="Area2D" parent="GameLayer/UI/InventoryRoot/WizardPlatform"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/WizardPlatform/TrayArea"]
+position = Vector2(0, 44)
+shape = SubResource("RectangleShape2D_30fn3")
+debug_color = Color(0, 0.592826, 0.292256, 0.42)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="GameLayer/UI/InventoryRoot/WizardPlatform"]
+position = Vector2(-426, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/WizardPlatform/StaticBody2D"]
+position = Vector2(425, 69)
+shape = SubResource("RectangleShape2D_dwmkc")
+
 [node name="TokenPlatform" type="Node2D" parent="GameLayer/UI/InventoryRoot"]
 visibility_layer = 512
 z_index = 5
-position = Vector2(914, 457)
+position = Vector2(957, 457)
 script = ExtResource("12_c0d7e")
 coin_scene = ExtResource("13_o1tcx")
 initial_items = 10
 held_token_scene = ExtResource("3_nthub")
 
 [node name="TokenFloor" type="StaticBody2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform"]
-position = Vector2(0, 121)
+position = Vector2(2, 102)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform/TokenFloor"]
-position = Vector2(-4, 80)
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform/TokenFloor"]
+position = Vector2(-144, -97)
+rotation = -4.70732
 shape = SubResource("RectangleShape2D_o1tcx")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform/TokenFloor"]
-position = Vector2(133, -101)
+position = Vector2(136, -100)
 rotation = -1.57079
 shape = SubResource("RectangleShape2D_o1tcx")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform/TokenFloor"]
-position = Vector2(-130, -108)
-rotation = -4.70732
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameLayer/UI/InventoryRoot/TokenPlatform/TokenFloor"]
+position = Vector2(14, 86)
 shape = SubResource("RectangleShape2D_o1tcx")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

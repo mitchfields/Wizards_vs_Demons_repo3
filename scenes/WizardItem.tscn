@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ccyawadxcs6ry"]
+
+[ext_resource type="Script" uid="uid://bgfx6nwwpovc6" path="res://WizardItem.gd" id="1_go47g"]
+[ext_resource type="Texture2D" uid="uid://c5qoctaqmhrbh" path="res://icon.svg" id="2_htw24"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_go47g"]
+size = Vector2(55, 54)
+
+[node name="WizardItem" type="RigidBody2D"]
+script = ExtResource("1_go47g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_go47g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 1)
+scale = Vector2(0.445313, 0.445313)
+texture = ExtResource("2_htw24")

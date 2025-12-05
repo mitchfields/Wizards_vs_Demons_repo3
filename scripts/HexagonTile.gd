@@ -73,3 +73,28 @@ func _bfs_layers(max_radius: int) -> Array:
 		frontier = next_frontier
 		depth += 1
 	return layers
+# -------------------------------------------------------------------
+# Wizard / tower placement helpers
+# -------------------------------------------------------------------
+
+# Simple type tag. For now, leave "Normal" for regular tiles.
+# Set to "Modifier" or "Power" in the Inspector for special tiles later.
+@export var tile_type: String = "Normal"
+
+# Which wizard/tower is sitting on this tile (if any)
+var wizard: Node2D = null
+
+
+func has_wizard() -> bool:
+	return wizard != null and is_instance_valid(wizard)
+
+
+func can_place_wizard() -> bool:
+	# Only allow wizards on NORMAL tiles that have no wizard yet
+	if tile_type != "Normal":
+		return false
+	return not has_wizard()
+
+
+func set_wizard(new_wizard: Node2D) -> void:
+	wizard = new_wizard
