@@ -22,7 +22,7 @@ func _ready() -> void:
 	global_position = mouse
 	_last_mouse_pos = mouse
 	_has_last_pos = true
-
+	add_to_group("held_coin")
 
 func _process(delta: float) -> void:
 	var mouse: Vector2 = get_global_mouse_position()

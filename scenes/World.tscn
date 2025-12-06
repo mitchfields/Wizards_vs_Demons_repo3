@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://byycx3eemm1ft"]
+[gd_scene load_steps=23 format=3 uid="uid://byycx3eemm1ft"]
 
 [ext_resource type="Script" uid="uid://c1l3ac0xr37aw" path="res://scripts/World.gd" id="1_c6gwx"]
 [ext_resource type="PackedScene" uid="uid://qylv8huf4d2i" path="res://scenes/CommonEnemy.tscn" id="3_0uv0p"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://dp4ql1mql8kk" path="res://scenes/TokenCoin.tscn" id="13_o1tcx"]
 [ext_resource type="AudioStream" uid="uid://ciwpin4bjaqbg" path="res://audio/test_track_youtube_recording_v001.wav" id="15_c0d7e"]
 [ext_resource type="Texture2D" uid="uid://bjtaomj4qsfm0" path="res://textures/environment_UI_sketch_v001.png" id="17_rpuxp"]
+[ext_resource type="Script" uid="uid://cpijtkjmjvfdj" path="res://scripts/HexOverlay.gd" id="18_nthub"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_30fn3"]
 size = Vector2(595, 97.5)
@@ -34,6 +35,7 @@ font_size = 26
 top_level = true
 script = ExtResource("1_c6gwx")
 queen_scene = ExtResource("5_pof0q")
+tilt_factor = 0.4
 portal_scene = ExtResource("3_rpuxp")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -184,3 +186,16 @@ texture = ExtResource("10_pdh0q")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_c0d7e")
 volume_db = -5.309
+
+[node name="HexOverlay" type="Node2D" parent="." node_paths=PackedStringArray("world", "camera")]
+script = ExtResource("18_nthub")
+world = NodePath("..")
+camera = NodePath("../Camera2D")
+base_color = Color(0.0219841, 0.0215668, 0.0190167, 1)
+base_width = 0.4
+hover_color = Color(0.89058, 0.898795, 0.89524, 0.9)
+hover_width = 2.695
+path_color = Color(0.604235, 0.0818896, 0.121942, 0.9)
+path_tail_len = 3.0
+path_wave_speed = 3.0
+rotation_offset_degrees = 0.0

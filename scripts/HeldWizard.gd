@@ -16,7 +16,7 @@ func _ready() -> void:
 	set_process(true)
 	set_process_input(true)
 	global_position = get_global_mouse_position()
-
+	add_to_group("held_wizard") 
 
 func _process(delta: float) -> void:
 	# SUPER simple: just stick to the mouse.

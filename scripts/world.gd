@@ -7,13 +7,15 @@ enum HexOrientation { POINTY, FLAT }
 @export var hex_orientation : HexOrientation = HexOrientation.POINTY
 @export var hex_size        : float          = 50.0   # >0!
 @export var queen_scene     : PackedScene
-@export var initial_spawn_distance : int      = 8
+@export var initial_spawn_distance : int      = 5
 @export var player_health   : int            = 20
+@export_range(0.1, 1.0, 0.01)
+var tilt_factor: float = 0.6  # 1.0 = flat; 0.6 ≈ nice tilt
 
 # Portals
 @export var portal_scene        : PackedScene
-@export var portal_min_distance : int = 5
-@export var portal_max_distance : int = 10
+@export var portal_min_distance : int = 3
+@export var portal_max_distance : int = 6
 
 # Drag–and–drop state (tile shop)
 var _dragging_preview : Node2D      = null
@@ -276,9 +278,11 @@ func _spawn_initial_portal() -> void:
 	if portal_scene == null:
 		return
 
-	# First portal: just put it out at the initial spawn distance along +X
-	var axial: Vector2 = Vector2(initial_spawn_distance, 0)
+	# Use the same distance_map-based logic as later portals,
+	# so the first one is also in a random valid location.
+	var axial: Vector2 = _pick_portal_axial()
 	_spawn_portal(axial)
+
 
 
 func _spawn_portal(axial: Vector2) -> Node2D:
@@ -399,39 +403,53 @@ func cube_round(c: Vector3) -> Vector3:
 	var rx: float = round(c.x)
 	var ry: float = round(c.y)
 	var rz: float = round(c.z)
+
 	var dx: float = abs(rx - c.x)
 	var dy: float = abs(ry - c.y)
 	var dz: float = abs(rz - c.z)
+
 	if dx > dy and dx > dz:
 		rx = -ry - rz
 	elif dy > dz:
 		ry = -rx - rz
 	else:
 		rz = -rx - ry
+
 	return Vector3(rx, ry, rz)
 
 
 func world_to_axial(w: Vector2) -> Vector2:
+	# Screen → board: undo tilt on Y
+	var t: float = tilt_factor
+	var board: Vector2 = Vector2(w.x, w.y / t)
+
 	var q: float
 	var r: float
 	if hex_orientation == HexOrientation.POINTY:
-		q = (2.0 / 3.0 * w.x) / hex_size
-		r = ((-1.0 / 3.0 * w.x) + (sqrt(3) / 3.0 * w.y)) / hex_size
+		q = (2.0 / 3.0 * board.x) / hex_size
+		r = ((-1.0 / 3.0 * board.x) + (sqrt(3) / 3.0 * board.y)) / hex_size
 	else:
-		q = ((sqrt(3) / 3.0 * w.x) - (1.0 / 3.0 * w.y)) / hex_size
-		r = (2.0 / 3.0 * w.y) / hex_size
+		q = ((sqrt(3) / 3.0 * board.x) - (1.0 / 3.0 * board.y)) / hex_size
+		r = (2.0 / 3.0 * board.y) / hex_size
+
 	var cube: Vector3 = cube_round(Vector3(q, -q - r, r))
 	return cube_to_axial(cube)
 
 
 func axial_to_world(a: Vector2) -> Vector2:
+	# Axial → board (classic flat hex layout)
+	var base: Vector2
 	if hex_orientation == HexOrientation.POINTY:
-		return Vector2(
+		base = Vector2(
 			hex_size * 1.5 * a.x,
 			hex_size * sqrt(3) * (a.y + a.x * 0.5)
 		)
 	else:
-		return Vector2(
+		base = Vector2(
 			hex_size * sqrt(3) * (a.x + 0.5 * a.y),
 			hex_size * 1.5 * a.y
 		)
+
+	# Board → screen: apply tilt on Y
+	var t: float = tilt_factor
+	return Vector2(base.x, base.y * t)
