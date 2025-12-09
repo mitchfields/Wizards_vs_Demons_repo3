@@ -1,12 +1,100 @@
-[gd_scene load_steps=3 format=3 uid="uid://ncdu2faijkrd"]
+[gd_scene load_steps=15 format=3 uid="uid://ncdu2faijkrd"]
 
 [ext_resource type="Script" uid="uid://c0516ionebivq" path="res://scripts/Turret.gd" id="1_3fd6t"]
 [ext_resource type="Texture2D" uid="uid://dgllrjajqxa1r" path="res://textures/beegame_previs_sketches_0018_sniper.png" id="2_xs7vd"]
+[ext_resource type="Texture2D" uid="uid://bb8hqcog12m83" path="res://textures/basic_wizard_spritesheet_v001.png" id="3_ugx75"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkgi7"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(0, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_am343"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isejn"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(1000, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqd1u"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(1500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48ebg"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(0, 500, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r00jm"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(500, 500, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6u10"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(1000, 500, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w7muu"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(1500, 500, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_27g3d"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(0, 1000, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cr6y3"]
+atlas = ExtResource("3_ugx75")
+region = Rect2(500, 1000, 500, 500)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lq2uo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hkgi7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_am343")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isejn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqd1u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48ebg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r00jm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c6u10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w7muu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_27g3d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cr6y3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="SniperTurret" type="Node2D"]
+z_index = 4
 script = ExtResource("1_3fd6t")
 metadata/_custom_type_script = "uid://dxagxtulkyjwf"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.205, 0.205)
+visible = false
+scale = Vector2(0.205, 0.124722)
 texture = ExtResource("2_xs7vd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, 10)
+scale = Vector2(0.175, 0.175)
+sprite_frames = SubResource("SpriteFrames_lq2uo")
+autoplay = "default"
+frame_progress = 0.129798

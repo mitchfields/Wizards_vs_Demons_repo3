@@ -1,0 +1,110 @@
+[gd_scene load_steps=16 format=3 uid="uid://ltqf337wb4oo"]
+
+[ext_resource type="Texture2D" uid="uid://bsngu2ykecady" path="res://textures/fog_of_war_v001.png" id="1_pg82e"]
+[ext_resource type="Texture2D" uid="uid://bnq6e5askj2fx" path="res://textures/fog_of_war_spritesheet_v001.png" id="2_b1j8g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_plk2q"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(0, 0, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i76sg"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(401, 0, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qypc"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(802, 0, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wd61d"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(1203, 0, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dxmc"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(0, 290, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1tf16"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(401, 290, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_luksj"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(802, 290, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qsjm"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(1203, 290, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xeba"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(0, 580, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_abjci"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(401, 580, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rjgd"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(802, 580, 401, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v0rwi"]
+atlas = ExtResource("2_b1j8g")
+region = Rect2(1203, 580, 401, 290)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3u0qs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_plk2q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i76sg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1qypc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wd61d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4dxmc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1tf16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_luksj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4qsjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xeba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_abjci")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rjgd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v0rwi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="FogOfWar" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("1_pg82e")
+region_rect = Rect2(0, 0, 840, 859)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2.38419e-07, 1.19209e-07)
+scale = Vector2(0.289277, 0.22069)
+sprite_frames = SubResource("SpriteFrames_3u0qs")
+autoplay = "default"
+frame_progress = 0.300407

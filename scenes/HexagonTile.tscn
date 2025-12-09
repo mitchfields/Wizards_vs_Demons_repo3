@@ -7,6 +7,6 @@
 script = ExtResource("1_dwrdm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.0346516, 0.016)
+scale = Vector2(0.0376648, 0.0226185)
 texture = ExtResource("2_m27il")
 region_rect = Rect2(56, 34, 253, 297)

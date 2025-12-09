@@ -19,3 +19,7 @@ config/icon="res://icon.svg"
 
 GridManager="*res://scripts/GridManager.gd"
 ProjectileManager="*res://scripts/ProjectileManager.gd"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.0846899, 0.08469, 0.0846899, 1)

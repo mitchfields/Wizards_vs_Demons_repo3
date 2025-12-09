@@ -1,4 +1,6 @@
+# res://scripts/TokenTray.gd
 extends Node2D
+class_name TokenTray
 
 @export var coin_scene: PackedScene
 @export var initial_items: int = 5
@@ -9,6 +11,9 @@ extends Node2D
 @export var held_token_scene: PackedScene
 @export var base_grab_radius: float = 80.0   # base radius around pile center
 
+# Coins granted after each completed wave
+@export var coins_per_wave: int = 5
+
 var _spawned_count: int = 0
 var _spawn_timer: float = 0.0
 
@@ -16,6 +21,7 @@ var _spawn_timer: float = 0.0
 func _ready() -> void:
 	randomize()
 
+	# Initial pile
 	if spawn_interval <= 0.0:
 		var i: int = 0
 		while i < initial_items:
@@ -25,12 +31,21 @@ func _ready() -> void:
 	else:
 		set_physics_process(true)
 
+	# Hook wave rewards from WaveManager (lives in World/GameLayer)
+	var world := get_tree().current_scene
+	if world and world.has_node("GameLayer/WaveManager"):
+		var wm: Node = world.get_node("GameLayer/WaveManager")
+		if not wm.is_connected("wave_ended", Callable(self, "_on_wave_ended")):
+			wm.connect("wave_ended", Callable(self, "_on_wave_ended"))
+
 
 func _physics_process(delta: float) -> void:
+	# No timed spawning → turn off
 	if spawn_interval <= 0.0:
 		set_physics_process(false)
 		return
 
+	# Finished current target stack
 	if _spawned_count >= initial_items:
 		set_physics_process(false)
 		return
@@ -52,8 +67,7 @@ func _spawn_coin() -> void:
 
 	if inst is Node2D:
 		var node2d: Node2D = inst as Node2D
-		# tight horizontal stack like you wanted
-		var x_offset: float = randf_range(-2, 2)
+		var x_offset: float = randf_range(-2.0, 2.0)
 		node2d.position = Vector2(x_offset, spawn_height)
 		node2d.rotation_degrees = randf_range(-spawn_rotation_range_degrees, spawn_rotation_range_degrees)
 
@@ -67,7 +81,7 @@ func _get_all_coins() -> Array[RigidBody2D]:
 
 
 func _input(event: InputEvent) -> void:
-	# Grab stack on left mouse press
+	# Grab a coin from the stack on left-click
 	if event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
 	and event.pressed:
@@ -120,77 +134,52 @@ func _on_stack_grabbed() -> void:
 	var idx: int = int(randi() % coins.size())
 	var removed_coin: RigidBody2D = coins[idx]
 	if is_instance_valid(removed_coin):
+		coins.remove_at(idx)
 		removed_coin.queue_free()
 
-	# Refresh list now that one was removed
-	coins = _get_all_coins()
+	# 2) Jostle the remaining coins a bit for juice
+	_burst_stack()
 
-	# 2) Strong impulse to remaining coins so the stack VERY CLEARLY reacts
+	# 3) Spawn a HeldToken in the player's hand
+	if held_token_scene == null:
+		return
+
+	var held: Node2D = held_token_scene.instantiate() as Node2D
+	if held == null:
+		return
+
+	get_tree().current_scene.add_child(held)
+	if held.has_method("begin_drag_from_tray"):
+		held.begin_drag_from_tray()
+
+
+func _burst_stack() -> void:
+	var coins: Array[RigidBody2D] = _get_all_coins()
 	var i: int = 0
 	while i < coins.size():
 		var c: RigidBody2D = coins[i]
-		if c != null:
+		if c:
 			var impulse: Vector2 = Vector2(randf_range(-200.0, 200.0), -600.0)
 			c.apply_impulse(impulse)
 			c.linear_velocity += impulse * 0.2
 		i += 1
 
-	# 3) Spawn a HeldToken in the player's hand
-	if held_token_scene != null:
-		var held: Node = held_token_scene.instantiate()
-		var root: Node = get_tree().current_scene
-		if root != null:
-			root.add_child(held)
-			if held is Node2D:
-				var held2d: Node2D = held as Node2D
-				held2d.global_position = get_global_mouse_position()
-			# Pass a reference to this tray so the HeldToken can call back
-			held.set("stack_tray", self)
 
-
-## Add a coin back just above the highest one and jostle the pile.
-func return_token_from_hand(_world_pos: Vector2) -> void:
-	if coin_scene == null:
+func _on_wave_ended(_wave_number: int) -> void:
+	# Reward coins after each completed wave,
+	# spawning them EXACTLY the same way as the initial stack.
+	if coins_per_wave <= 0:
 		return
 
-	var coins: Array[RigidBody2D] = _get_all_coins()
-	var center: Vector2 = Vector2.ZERO
-	var highest_y: float = 0.0
-	var have_any: bool = false
-
-	var i: int = 0
-	while i < coins.size():
-		var c: RigidBody2D = coins[i]
-		center += c.position
-		if not have_any or c.position.y < highest_y:
-			highest_y = c.position.y
-			have_any = true
-		i += 1
-
-	if have_any:
-		center /= float(coins.size())
+	if spawn_interval <= 0.0:
+		# Instant-spawn case: do exactly what initial stack does
+		var i: int = 0
+		while i < coins_per_wave:
+			_spawn_coin()
+			_spawned_count += 1
+			i += 1
 	else:
-		center = Vector2.ZERO
-		highest_y = 0.0
-
-	var inst: Node = coin_scene.instantiate()
-	add_child(inst)
-
-	var new_coin_rb: RigidBody2D = null
-	if inst is RigidBody2D:
-		new_coin_rb = inst as RigidBody2D
-		new_coin_rb.position = Vector2(center.x, highest_y - 40.0)
-		var impulse_new: Vector2 = Vector2(0.0, -700.0)
-		new_coin_rb.apply_impulse(impulse_new)
-		new_coin_rb.linear_velocity += impulse_new * 0.3
-
-	# Jostle the rest of the stack a bit
-	coins = _get_all_coins()
-	i = 0
-	while i < coins.size():
-		var c2: RigidBody2D = coins[i]
-		if c2 != null and c2 != new_coin_rb:
-			var impulse: Vector2 = Vector2(randf_range(-150.0, 150.0), -500.0)
-			c2.apply_impulse(impulse)
-			c2.linear_velocity += impulse * 0.25
-		i += 1
+		# Timed-spawn case: bump the target count and let _physics_process
+		# use the same spawning logic as the initial pile.
+		initial_items += coins_per_wave
+		set_physics_process(true)
